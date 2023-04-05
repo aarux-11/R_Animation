@@ -1,4 +1,7 @@
 # R_Animation
+*This code is not original, used only for representation purposes*
+
+
 Creating a short animation using R Markdown files saved with .rmd extension.
 
 
