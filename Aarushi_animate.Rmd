@@ -1,0 +1,65 @@
+---
+title: "Aarushi_animate"
+output: html_document
+date: "`r Sys.Date()`"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r animate, echo=TRUE}
+#install.packages("gapminder")
+#install.packages("gganimate")
+#install.packages("gifski")
+library(ggplot2)
+library(gganimate)
+library(gapminder)
+library(devtools)
+library(RCurl)
+library(httr)
+
+gapminder = data.frame(gapminder)
+head(gapminder,50)
+
+#ggsave('plot_gdpPercap_lifeExp_static.png', width=8, height=8)
+
+ggplot(gapminder, aes(gdpPercap, lifeExp, size = pop, colour = country)) +
+  geom_point(alpha = 0.7, show.legend = FALSE) +
+  scale_colour_manual(values = country_colors) +
+  scale_size(range = c(2, 12)) +
+  scale_x_log10() +
+  facet_wrap(~continent) +
+  labs(title = 'Year: 1952-2007', x = 'GDP per capita', y = 'Life expectancy')
+
+
+p1 <- ggplot(gapminder, aes(gdpPercap, lifeExp, size = pop, colour = country)) +
+  geom_point(alpha = 0.7, show.legend = FALSE) +
+  scale_colour_manual(values = country_colors) +
+  scale_size(range = c(2, 12)) +
+  scale_x_log10() +
+  facet_wrap(~continent) +
+  labs(title = 'Year: {frame_time}', x = 'GDP per capita', y = 'Life expectancy') +
+  transition_time(year) +
+  ease_aes('linear')
+
+#set_config( config( ssl_verifypeer = 0L ) )
+#devtools::install_github("dgrtwo/gganimate")
+
+animate(p1)
+
+#anim_save('plot_gdpPercap_lifeExp.gif')
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
