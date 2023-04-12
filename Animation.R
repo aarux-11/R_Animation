@@ -11,7 +11,6 @@ library(httr)
 gapminder = data.frame(gapminder)
 gapminder
 
-
 #ggsave('plot_gdpPercap_lifeExp_static.png', width=8, height=8)
 
 ggplot(gapminder, aes(gdpPercap, lifeExp, size = pop, colour = country)) +
